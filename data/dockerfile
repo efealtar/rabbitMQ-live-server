@@ -1,0 +1,16 @@
+FROM node:21
+
+# Install json-server globally
+RUN npm install -g json-server
+
+# Set the working directory
+WORKDIR /data
+
+# Copy the mock data file
+COPY mock_data.json /data/
+
+# Expose the port json-server listens on
+EXPOSE 3000
+
+# Command to run json-server
+CMD ["json-server", "--watch", "mock_data.json", "--port", "3000"]

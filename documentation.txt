@@ -1,0 +1,10 @@
+just write to terminal on root(make sure docker running):
+
+docker-compose up
+
+
+html at: http://localhost:3001/
+rabbitmq: http://localhost:15672/
+mock data: http://localhost:3000/cryptoPairs
+
+i kept it simplest form just to show you i can create channel and show live updates.

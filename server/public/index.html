@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="http://localhost:3001/socket.io/socket.io.js"></script>
+    <title>Crypto Trading Dashboard</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 8px;
+      }
+      table {
+        width: 100%;
+        margin-top: 20px;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      #orderForm {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Crypto Trading Dashboard</h1>    
+    <div id="currentPrices">
+      <h2>Last Trades</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Order Price</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody id="pricesBody"></tbody>
+      </table>
+    </div>
+    <h2>Choose currency to see history</h2>
+    <form id="orderForm" onsubmit="return false;">
+      <select id="cryptoPair">
+        <option value="BTC_USD">BTC/USD</option>
+        <option value="ETH_USD">ETH/USD</option>
+        <option value="XRP_USD">XRP/USD</option>
+        <option value="LTC_USD">LTC/USD</option>
+        <option value="ADA_USD">ADA/USD</option>
+      </select>
+      <button type="button" onclick="subscribe()">Subscribe</button>
+    <script>
+      const socket = io("http://localhost:3001");
+
+      socket.on("connect", () => {
+        console.log("Connected to server.");
+        // Subscribe to updates for all pairs initially
+        ["BTC_USD", "ETH_USD", "XRP_USD", "LTC_USD", "ADA_USD"].forEach(
+          (pair) => {
+            socket.emit("subscribe", pair);
+          }
+        );
+      });
+
+      socket.on("priceUpdate", function (data) {
+        const pricesBody = document.getElementById("pricesBody");
+        pricesBody.innerHTML = ""; // Clear current entries
+
+        // Display buy and sell orders separately
+        Object.keys(data).forEach((type) => {
+          data[type].forEach((order) => {
+            const row = `<tr>
+        <td>${type === "buyOrders" ? "Buy" : "Sell"}</td>
+        <td>${order.price}</td>
+        <td>${order.quantity}</td>
+      </tr>`;
+            pricesBody.innerHTML += row;
+          });
+        });
+      });
+
+      // Handle incoming order updates
+      socket.on("orderUpdate", function (orders) {
+        const orderBookBody = document.getElementById("orderBookBody");
+        orderBookBody.innerHTML = ""; // Clear current entries
+        orders.forEach((order) => {
+          const row = `<tr>
+            <td>${order.type}</td>
+            <td>${order.price}</td>
+            <td>${order.quantity}</td>
+            <td><button onclick="cancelOrder('${order.id}')">Cancel</button></td>
+          </tr>`;
+          orderBookBody.innerHTML += row;
+        });
+      });
+
+      // Handle incoming trade updates
+      socket.on("tradeUpdate", function (trades) {
+        const tradesBody = document.getElementById("tradesBody");
+        tradesBody.innerHTML = ""; // Clear current entries
+        trades.forEach((trade) => {
+          const row = `<tr>
+            <td>${trade.price}</td>
+            <td>${trade.quantity}</td>
+            <td>${new Date(trade.timestamp).toLocaleTimeString()}</td>
+          </tr>`;
+          tradesBody.innerHTML += row;
+        });
+      });
+
+      function subscribe() {
+        const pair = document.getElementById("cryptoPair").value;
+        socket.emit("subscribe", pair);
+        console.log(`Subscribed to ${pair}`);
+      }
+
+      function submitOrder() {
+        const orderType = document.querySelector(
+          'input[name="orderType"]:checked'
+        ).value;
+        const price = document.getElementById("price").value;
+        const quantity = document.getElementById("quantity").value;
+        const pair = document.getElementById("cryptoPair").value;
+
+        socket.emit("newOrder", {
+          type: orderType,
+          price: price,
+          quantity: quantity,
+          pair: pair,
+        });
+        console.log("Order submitted:", {
+          type: orderType,
+          price,
+          quantity,
+          pair,
+        });
+      }
+    </script>
+  </body>
+</html>

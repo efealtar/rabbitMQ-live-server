@@ -1,0 +1,73 @@
+{
+  "cryptoPairs": {
+    "BTC_USD": {
+      "buyOrders": [
+        { "price": 37500, "quantity": 0.5 },
+        { "price": 37400, "quantity": 0.2 }
+      ],
+      "sellOrders": [
+        { "price": 37600, "quantity": 0.3 },
+        { "price": 37700, "quantity": 0.4 }
+      ],
+      "trades": [
+        { "price": 37550, "quantity": 0.1, "timestamp": "2024-05-11T12:00:00Z" }
+      ]
+    },
+    "ETH_USD": {
+      "buyOrders": [
+        { "price": 2500, "quantity": 1.0 },
+        { "price": 2490, "quantity": 2.0 }
+      ],
+      "sellOrders": [
+        { "price": 2520, "quantity": 1.5 },
+        { "price": 2530, "quantity": 1.2 }
+      ],
+      "trades": [
+        { "price": 2510, "quantity": 0.5, "timestamp": "2024-05-11T12:05:00Z" }
+      ]
+    },
+    "XRP_USD": {
+      "buyOrders": [
+        { "price": 0.65, "quantity": 1000 },
+        { "price": 0.64, "quantity": 1500 }
+      ],
+      "sellOrders": [
+        { "price": 0.66, "quantity": 1200 },
+        { "price": 0.67, "quantity": 1100 }
+      ],
+      "trades": [
+        { "price": 0.655, "quantity": 500, "timestamp": "2024-05-11T12:10:00Z" }
+      ]
+    },
+    "LTC_USD": {
+      "buyOrders": [
+        { "price": 130, "quantity": 10 },
+        { "price": 128, "quantity": 15 }
+      ],
+      "sellOrders": [
+        { "price": 131, "quantity": 12 },
+        { "price": 132, "quantity": 18 }
+      ],
+      "trades": [
+        { "price": 130.5, "quantity": 8, "timestamp": "2024-05-11T12:15:00Z" }
+      ]
+    },
+    "ADA_USD": {
+      "buyOrders": [
+        { "price": 0.9, "quantity": 2000 },
+        { "price": 0.89, "quantity": 2500 }
+      ],
+      "sellOrders": [
+        { "price": 0.91, "quantity": 1800 },
+        { "price": 0.92, "quantity": 2300 }
+      ],
+      "trades": [
+        {
+          "price": 0.905,
+          "quantity": 1500,
+          "timestamp": "2024-05-11T12:20:00Z"
+        }
+      ]
+    }
+  }
+}
